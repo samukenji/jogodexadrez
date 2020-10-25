@@ -34,4 +34,17 @@ public class Tabuleiro {
 	{
 		this.qddcolunas= qddcolunas;
 	}
+	
+	//Método que retorna uma peça que está em uma determinada linha e coluna do tabuleiro (matriz de peças). 
+
+	public Pecas peca(int qddlinhas, int qddcolunas)
+	{
+		return matrizdepecas[qddlinhas][qddcolunas];
+	}
+	
+	//Método que retorna uma peça que está em uma determinada posição
+	public Pecas peca(Posicao posicao)
+	{
+		return matrizdepecas[posicao.getLinha()][posicao.getColuna()];
+	}
 }

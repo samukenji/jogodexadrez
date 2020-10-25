@@ -10,6 +10,10 @@ public class Pecas {
 	{
 		this.tabuleiro=tabuleiro;
 	}
+	public Pecas()
+	{
+		
+	}
 	
 	protected Tabuleiro getTabuleiro()
 	{
