@@ -40,6 +40,6 @@ public class Partida_de_xadrez {
 	//Método responsável por iniciar a partida de xadrez, colocando as peças no tabuleiro
 	private void iniciodejogo()
 	{
-		tabuleiro.colocarpeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(2, 1));
+		tabuleiro.colocarpeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(9, 1));
 	}
 }
