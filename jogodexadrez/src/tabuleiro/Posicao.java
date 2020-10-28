@@ -1,3 +1,4 @@
+// A posição de uma peça será usada na classe Pecas e extende a classe Peca_de_xadrez
 package tabuleiro;
 
 public class Posicao {

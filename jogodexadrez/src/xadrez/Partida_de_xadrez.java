@@ -1,6 +1,8 @@
 // Classe fundamental, pois contém todas as regras do jogo de xadrez.
 package xadrez;
 
+import pecas_oficiais.Torre;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class Partida_de_xadrez {
@@ -8,9 +10,11 @@ public class Partida_de_xadrez {
 	// Uma partida de xadrez contém um tabuleiro:
 	private Tabuleiro tabuleiro;
 	
+	// O tabuleiro de xadrez contém sempre 8 linhas e 8 colunas
 	public Partida_de_xadrez()
 	{
 		tabuleiro= new Tabuleiro(8, 8);
+		iniciodejogo();
 	}
 	
 	// Método que retorna uma matriz de peças de xadrez para essa essa partida
@@ -30,7 +34,12 @@ public class Partida_de_xadrez {
 			}
 		}
 		
-		return matriz;
-		
+		return matriz;	
+	}
+	
+	//Método responsável por iniciar a partida de xadrez, colocando as peças no tabuleiro
+	private void iniciodejogo()
+	{
+		tabuleiro.colocarpeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(2, 1));
 	}
 }

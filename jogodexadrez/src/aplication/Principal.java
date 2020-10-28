@@ -8,6 +8,8 @@ public class Principal {
 
 		Partida_de_xadrez partida= new Partida_de_xadrez();
 		UI.printTabuleiro(partida.getPieces());
+		
+		
 	}
 
 }

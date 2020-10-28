@@ -47,4 +47,13 @@ public class Tabuleiro {
 	{
 		return matrizdepecas[posicao.getLinha()][posicao.getColuna()];
 	}
+	
+	// Método que coloca uma peça no tabuleiro. 
+	public void colocarpeca(Pecas peca, Posicao posicao)
+	{
+		//Uma posição da matriz de peças agora vai receber uma peça
+		matrizdepecas[posicao.getLinha()][posicao.getColuna()]= peca;
+		// A partir de agora, a posição da peça não será mais nula
+		peca.posicao=posicao;
+	}
 }

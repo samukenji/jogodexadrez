@@ -14,6 +14,7 @@ public class Peca_de_xadrez extends Pecas{
 		this.cor = cor;
 	}
 	
+	
 	// Criando somente o getCor(), para utilizar o valor. A cor não pode ser alterada em nenhuma ocasião...
 	
 	public Cor getCor()
