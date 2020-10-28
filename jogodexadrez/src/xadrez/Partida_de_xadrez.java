@@ -1,8 +1,8 @@
 // Classe fundamental, pois contém todas as regras do jogo de xadrez.
 package xadrez;
 
+import pecas_oficiais.Rei;
 import pecas_oficiais.Torre;
-import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class Partida_de_xadrez {
@@ -40,6 +40,19 @@ public class Partida_de_xadrez {
 	//Método responsável por iniciar a partida de xadrez, colocando as peças no tabuleiro
 	private void iniciodejogo()
 	{
-		tabuleiro.colocarpeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(9, 1));
+		//chamando método iniciar_com_posicao_de_xadrez 
+		iniciar_com_posicao_de_xadrez('b', 6, new Torre(tabuleiro, Cor.BRANCO));
+		iniciar_com_posicao_de_xadrez('e', 8, new Rei(tabuleiro, Cor.BRANCO));
+		iniciar_com_posicao_de_xadrez('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+
 	}
+	
+	// Método também responsável por iniciar a partida de xadrez mas informando a posição de xadrez e não a posição da matriz como o método anterior
+	private void iniciar_com_posicao_de_xadrez(char coluna, int linha, Peca_de_xadrez pecadexadrez)
+	{
+		
+		Posicao_de_xadrez x = new Posicao_de_xadrez(coluna, linha);
+		tabuleiro.colocarpeca(pecadexadrez, x.conversaodepecas());
+	}
+	
 }
