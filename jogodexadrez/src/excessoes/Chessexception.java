@@ -1,6 +1,6 @@
 package excessoes;
 
-public class Chessexception extends RuntimeException{
+public class Chessexception extends Boardexception{
 
 	private static final long serialVersionUID = 1L;
 
@@ -8,4 +8,5 @@ public class Chessexception extends RuntimeException{
 	{
 		super(mensagem);
 	}
+	
 }

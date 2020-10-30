@@ -1,8 +1,12 @@
-//Classe que contém método para imprimir o tabuleiro de xadrez
+//Classe que contém método para imprimir o tabuleiro de xadrez e permitir entrada de dados
 package aplication;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import xadrez.Cor;
 import xadrez.Peca_de_xadrez;
+import xadrez.Posicao_de_xadrez;
 
 public class UI {
 
@@ -27,6 +31,24 @@ public class UI {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+	
+	// método que permite a entrada da posição pelo usuário
+	public static  Posicao_de_xadrez entradadeposicao(Scanner entrar)
+	{
+		try {
+		String s= entrar.next();
+		char coluna= s.charAt(0);
+		int linha = Integer.parseInt(s.substring(1));
+		return new Posicao_de_xadrez(coluna, linha);
+
+		}
+		catch(RuntimeException e)
+		{
+			throw new InputMismatchException("Você so pode entrar com valores de a1 até h8");
+		}
+		
+	}
+	
 	// método que imprime tabuleiro
 	public static void printTabuleiro(Peca_de_xadrez[][] tabuleirodexadrez) {
 		for (int i = 0; i < tabuleirodexadrez.length; i++) {

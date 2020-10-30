@@ -73,6 +73,30 @@ public class Tabuleiro {
 		peca.posicao=posicao;
 	}
 	
+	//Método que retira uma peça do tabuleiro (Para mover uma peça, antes precisamos tirá-la do tabuleiro)
+	public Pecas removepeca(Posicao posicao)
+	{
+		if(!existeposicao(posicao))
+		{
+			throw new Boardexception("Essa posição não existe!");
+		}
+		//Verificando se existe uma peça nessa posição 
+		if(peca(posicao)== null)
+		{
+			return null;
+		}
+		
+		//Criando uma variável para receber a peça dessa posição...
+		Pecas aux= peca(posicao);
+		aux.posicao= null;
+		
+		// Indicando que essa posição da matriz ficou nula
+		matrizdepecas[posicao.getLinha()][posicao.getColuna()] = null;
+		
+		return aux;
+	}
+	
+	
 	//Métodos que verificam se a posição existe ou não
 	public boolean existeposicao(int linha, int coluna)
 	{

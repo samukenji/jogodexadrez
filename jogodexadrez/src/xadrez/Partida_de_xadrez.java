@@ -1,14 +1,17 @@
 // Classe fundamental, pois contém todas as regras do jogo de xadrez.
 package xadrez;
 
+import excessoes.Chessexception;
 import pecas_oficiais.Rei;
 import pecas_oficiais.Torre;
+import tabuleiro.Pecas;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class Partida_de_xadrez {
 
 	// Uma partida de xadrez contém um tabuleiro:
-	private Tabuleiro tabuleiro;
+	private static Tabuleiro tabuleiro;
 
 	// O tabuleiro de xadrez contém sempre 8 linhas e 8 colunas
 	public Partida_de_xadrez() {
@@ -34,8 +37,7 @@ public class Partida_de_xadrez {
 		return matriz;
 	}
 
-	// Método responsável por iniciar a partida de xadrez, colocando as peças no
-	// tabuleiro
+	// Método responsável por iniciar a partida de xadrez, colocando as peças no tabuleiro
 	private void iniciodejogo() {
 		// chamando método iniciar_com_posicao_de_xadrez
 		iniciar_com_posicao_de_xadrez('c', 1, new Torre(tabuleiro, Cor.BRANCO));
@@ -59,6 +61,35 @@ public class Partida_de_xadrez {
 
 		Posicao_de_xadrez x = new Posicao_de_xadrez(coluna, linha);
 		tabuleiro.colocarpeca(pecadexadrez, x.conversaodepecas());
+	}
+	
+	//Método que pega a peça removida pelo método removepeca() da classe Tabuleiro e coloca na posição de destino
+	public static Peca_de_xadrez moverpeca(Posicao_de_xadrez posicaoinicial, Posicao_de_xadrez posicaofinal)
+	{
+		// Fazendo a conversão da posição de xadrez para a posição da matriz
+		Posicao x= posicaoinicial.conversaodepecas();
+		Posicao y= posicaofinal.conversaodepecas();
+		validarposicao(x);
+		Pecas capturedPiece = makeMove(x,y);
+		return (Peca_de_xadrez) capturedPiece;
+	}
+	
+	//Método que verifica se existe peça em uma posição, para que ela seja movida
+	private static void validarposicao(Posicao posicao)
+	{
+		if(!tabuleiro.jatempeca(posicao))
+		{
+			throw new Chessexception("Não existe peça nessa posição");
+		}
+	}
+	
+	private static Pecas makeMove(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)
+	{
+		Pecas peca_a_ser_movida= tabuleiro.removepeca(posicaodapeca);
+		Pecas peca_a_ser_retirada= tabuleiro.removepeca(posicao_da_peca_que_ocupa_o_destino);
+		tabuleiro.colocarpeca(peca_a_ser_movida, posicao_da_peca_que_ocupa_o_destino);
+		
+		return peca_a_ser_retirada;
 	}
 
 }
