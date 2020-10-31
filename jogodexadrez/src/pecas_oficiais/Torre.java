@@ -19,4 +19,12 @@ public class Torre extends Peca_de_xadrez{
 	{
 		return "T";
 	}
+	
+	@Override
+	public boolean[][] matrizboolean()
+	{
+		boolean[][] mat= new boolean[getTabuleiro().getQddlinhas()][getTabuleiro().getQddcolunas()];
+		
+		return mat;
+	}
 }

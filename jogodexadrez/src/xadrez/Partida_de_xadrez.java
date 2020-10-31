@@ -81,6 +81,11 @@ public class Partida_de_xadrez {
 		{
 			throw new Chessexception("Não existe peça nessa posição");
 		}
+		
+		if(!tabuleiro.peca(posicao).pelomenosuma())
+		{
+			throw new Chessexception("Não existe movimentos possíveis para a peça escolhida!");
+		}
 	}
 	
 	private static Pecas makeMove(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)

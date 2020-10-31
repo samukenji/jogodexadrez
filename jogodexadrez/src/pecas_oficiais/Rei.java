@@ -16,4 +16,13 @@ public class Rei extends Peca_de_xadrez{
 	{
 		return "R";
 	}
+	
+	@Override
+	public boolean[][] matrizboolean()
+	{
+		boolean[][] mat= new boolean[getTabuleiro().getQddlinhas()][getTabuleiro().getQddcolunas()];
+		
+		return mat;
+	}
+
 }
