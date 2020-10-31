@@ -69,13 +69,14 @@ public class Partida_de_xadrez {
 		// Fazendo a conversão da posição de xadrez para a posição da matriz
 		Posicao x= posicaoinicial.conversaodepecas();
 		Posicao y= posicaofinal.conversaodepecas();
-		validarposicao(x);
+		validarposicaodeorigem(x);
+		validarposicaodedestino(x,y);
 		Pecas capturedPiece = makeMove(x,y);
 		return (Peca_de_xadrez) capturedPiece;
 	}
 	
 	//Método que verifica se existe peça em uma posição, para que ela seja movida
-	private static void validarposicao(Posicao posicao)
+	private static void validarposicaodeorigem(Posicao posicao)
 	{
 		if(!tabuleiro.jatempeca(posicao))
 		{
@@ -88,6 +89,13 @@ public class Partida_de_xadrez {
 		}
 	}
 	
+	private static void validarposicaodedestino(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)
+	{
+		if(!tabuleiro.peca(posicaodapeca).movimentopossivel(posicao_da_peca_que_ocupa_o_destino))
+		{
+			throw new Chessexception("A peça não pode se mover para a posição de destino!");
+		}
+	}
 	private static Pecas makeMove(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)
 	{
 		Pecas peca_a_ser_movida= tabuleiro.removepeca(posicaodapeca);

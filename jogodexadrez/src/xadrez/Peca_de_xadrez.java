@@ -1,6 +1,7 @@
 package xadrez;
 
 import tabuleiro.Pecas;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public abstract class Peca_de_xadrez extends Pecas{
@@ -20,6 +21,13 @@ public abstract class Peca_de_xadrez extends Pecas{
 	public Cor getCor()
 	{
 		return cor;
+	}
+	
+	//Método importante para realizar um movimento. Verifica se existe peça adversária em uma posição.
+	protected boolean existepecaadversaria(Posicao posicao)
+	{
+		Peca_de_xadrez x = (Peca_de_xadrez) getTabuleiro().peca(posicao);
+		return x != null && x.getCor() != cor;
 	}
 	
 	
