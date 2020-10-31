@@ -19,12 +19,19 @@ public class Principal {
 
 
 			try {
+				
+				//Digitar posição da peça a mover
 				UI.clearScreen();
 				UI.printTabuleiro(partida.getPieces());
 				System.out.println();
 				System.out.print("Posição inicial: ");
 				Posicao_de_xadrez posicaoinicial = UI.entradadeposicao(entrar);
 
+				//Possíveis opções de destino sendo mostradas
+				boolean[][] movimentosquedaprafazer= partida.opcoesdedestino(posicaoinicial);
+				UI.clearScreen();
+				UI.printTabuleiro(partida.getPieces(), movimentosquedaprafazer);
+				
 				System.out.println();
 				System.out.print("Posição final: ");
 				Posicao_de_xadrez posicaofinal = UI.entradadeposicao(entrar);
@@ -43,6 +50,11 @@ public class Principal {
 
 		}
 
+	}
+
+	private static boolean[][] opcoesdedestino(Posicao_de_xadrez posicaoinicial) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

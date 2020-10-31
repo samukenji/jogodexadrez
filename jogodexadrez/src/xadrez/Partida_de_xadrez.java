@@ -36,7 +36,7 @@ public class Partida_de_xadrez {
 
 		return matriz;
 	}
-
+	
 	// Método responsável por iniciar a partida de xadrez, colocando as peças no tabuleiro
 	private void iniciodejogo() {
 		// chamando método iniciar_com_posicao_de_xadrez
@@ -89,6 +89,8 @@ public class Partida_de_xadrez {
 		}
 	}
 	
+
+	//Método que verifica se tem como mover uma peca para uma determinada posição de destino
 	private static void validarposicaodedestino(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)
 	{
 		if(!tabuleiro.peca(posicaodapeca).movimentopossivel(posicao_da_peca_que_ocupa_o_destino))
@@ -104,5 +106,16 @@ public class Partida_de_xadrez {
 		
 		return peca_a_ser_retirada;
 	}
+	
+	//Método que mostra ao usuário o tabuleiro de xadrez contendo as posições em que ele pode mover as peças
+		public boolean[][]opcoesdedestino(Posicao_de_xadrez posicaodapeca)
+		{
+			//Convertendo a posição de xadrez para uma posição comum...
+			Posicao posicao= posicaodapeca.conversaodepecas();
+			//Validando a posição de origem...
+			validarposicaodeorigem(posicao);
+			
+			return tabuleiro.peca(posicao).matrizboolean();
+		}
 
 }

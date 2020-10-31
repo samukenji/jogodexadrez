@@ -60,7 +60,7 @@ public class UI {
 		for (int i = 0; i < tabuleirodexadrez.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < tabuleirodexadrez.length; j++) {
-				printPeca(tabuleirodexadrez[i][j]);
+				printPeca(tabuleirodexadrez[i][j], false);
 			}
 			System.out.println();
 		}
@@ -68,11 +68,15 @@ public class UI {
 	}
 
 	// método que imprime uma peça
-	public static void printPeca(Peca_de_xadrez pecadexadrez) {
+	public static void printPeca(Peca_de_xadrez pecadexadrez, boolean colorir_ou_nao) {
 		// se não tiver peça em uma posição do tabuleiro, imprimimos um traço
 
+		if(colorir_ou_nao)
+		{
+			System.out.print(ANSI_BLUE_BACKGROUND);
+		}
 		if (pecadexadrez == null) {
-			System.out.print("-");
+			System.out.print("-" + ANSI_RESET);
 		} else {
 			if (pecadexadrez.getCor() == Cor.BRANCO) {
 				System.out.print(ANSI_WHITE + pecadexadrez + ANSI_RESET);
@@ -83,6 +87,17 @@ public class UI {
 		// imprimindo espaço em branco para que as peças não fiquem grudadas
 		System.out.print(" ");
 		
+	}
+	
+	public static void printTabuleiro(Peca_de_xadrez[][] tabuleirodexadrez, boolean[][] movimentosquedaprafazer) {
+		for (int i = 0; i < tabuleirodexadrez.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j = 0; j < tabuleirodexadrez.length; j++) {
+				printPeca(tabuleirodexadrez[i][j], movimentosquedaprafazer[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("  a b c d e f g h");
 	}
 
 }
