@@ -1,6 +1,8 @@
 package aplication;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import excessoes.Chessexception;
@@ -14,6 +16,7 @@ public class Principal {
 
 		Scanner entrar = new Scanner(System.in);
 		Partida_de_xadrez partida = new Partida_de_xadrez();
+		List<Peca_de_xadrez> pecascapturadas = new ArrayList<>();
 
 		while (true) {
 
@@ -22,7 +25,7 @@ public class Principal {
 				
 				//Digitar posição da peça a mover
 				UI.clearScreen();
-				UI.printTabuleiro(partida.getPieces());
+				UI.printPartida(partida, pecascapturadas);
 				System.out.println();
 				System.out.print("Posição inicial: ");
 				Posicao_de_xadrez posicaoinicial = UI.entradadeposicao(entrar);
@@ -37,6 +40,11 @@ public class Principal {
 				Posicao_de_xadrez posicaofinal = UI.entradadeposicao(entrar);
 
 				Peca_de_xadrez pecacapturada = Partida_de_xadrez.moverpeca(posicaoinicial, posicaofinal);
+				
+				if(pecacapturada != null)
+				{
+					pecascapturadas.add(pecacapturada);
+				}
 			} 
 			catch (Chessexception excessao) {
 				System.out.println(excessao.getMessage());

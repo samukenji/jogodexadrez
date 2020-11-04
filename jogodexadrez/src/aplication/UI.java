@@ -1,10 +1,13 @@
-//Classe que contém método para imprimir o tabuleiro de xadrez e permitir entrada de dados
+//Classe que contém método para imprimir os resultados na tela
 package aplication;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import xadrez.Cor;
+import xadrez.Partida_de_xadrez;
 import xadrez.Peca_de_xadrez;
 import xadrez.Posicao_de_xadrez;
 
@@ -100,4 +103,35 @@ public class UI {
 		System.out.println("  a b c d e f g h");
 	}
 
+	//Método que imprime a partida de xadrez, contendo o turno e uma mensagem de espera; e não somente o tabuleiro
+	public static void printPartida(Partida_de_xadrez partida, List<Peca_de_xadrez> pecascapturadas)
+	{
+		//Imprime o tabuleiro
+		printTabuleiro(partida.getPieces());
+		System.out.println();
+		imprimepecascapturadas(pecascapturadas);
+		System.out.println("Turno: " + partida.getTurno());
+		System.out.println("Esperando a jogada do: " + partida.getCor_da_vez());
+	}
+	
+	//Método que imprime na tela as peças capturadas durante o jogo. Para isso, precisamos criar antes uma lista dessas peças
+	private static void imprimepecascapturadas(List<Peca_de_xadrez> pecascapturadas)
+	{
+		//Dessa lista de peças capturadas, precisamos separar as brancas das pretas. Para isso, usamos expressões lambda.
+		List<Peca_de_xadrez> brancascapturadas= pecascapturadas.stream().filter(x -> x.getCor() == Cor.BRANCO).collect(Collectors.toList());
+		List<Peca_de_xadrez> pretascapturadas= pecascapturadas.stream().filter(y -> y.getCor() == Cor.PRETO).collect(Collectors.toList());
+		
+		System.out.println("Peças capturadas: ");
+		System.out.print("Peças brancas: ");
+		
+		System.out.print(ANSI_WHITE);
+		System.out.print(brancascapturadas);
+		System.out.print(ANSI_RESET);
+		System.out.println();
+		
+		System.out.print("Peças pretas: ");
+		System.out.print(ANSI_YELLOW);
+		System.out.print(pretascapturadas);
+		System.out.println(ANSI_RESET);
+	}
 }

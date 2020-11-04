@@ -1,6 +1,9 @@
 // Classe fundamental, pois contém todas as regras do jogo de xadrez.
 package xadrez;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import excessoes.Chessexception;
 import pecas_oficiais.Rei;
 import pecas_oficiais.Torre;
@@ -10,17 +13,37 @@ import tabuleiro.Tabuleiro;
 
 public class Partida_de_xadrez {
 
-	// Uma partida de xadrez contém um tabuleiro:
+	// Uma partida de xadrez contém um tabuleiro, um turno (jogada), e a vez de uma cor:
 	private static Tabuleiro tabuleiro;
-
+	private static int turno;
+	private static Cor cor_da_vez;
+	
+	// Para ajudar no controle do jogo, vamos criar também uma lista de peças que estão no tabuleiro e outra de peças que estão fora do tabuleiro.
+	private static List<Pecas> pecas_no_tabuleiro= new ArrayList<>();
+	private static List<Pecas> pecascapturadas = new ArrayList<>();
+	
+	
 	// O tabuleiro de xadrez contém sempre 8 linhas e 8 colunas
 	public Partida_de_xadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
+		//O jogo sempre começa com o primeiro turno e na vez das peças brancas, então definimos inicialmente:
+		turno = 1;
+		cor_da_vez = Cor.BRANCO;
 		iniciodejogo();
+	}
+	
+	public int getTurno()
+	{
+		return turno;
+	}
+	
+	
+	public Cor getCor_da_vez()
+	{
+		return cor_da_vez;
 	}
 
 	// Método que retorna uma matriz de peças de xadrez para essa essa partida
-
 	public Peca_de_xadrez[][] getPieces() {
 		// Criando uma matriz com quantidade de linhas e colunas do tabuleiro.
 		Peca_de_xadrez[][] matriz = new Peca_de_xadrez[tabuleiro.getQddlinhas()][tabuleiro.getQddcolunas()];
@@ -55,12 +78,15 @@ public class Partida_de_xadrez {
 		iniciar_com_posicao_de_xadrez('d', 8, new Rei(tabuleiro, Cor.PRETO));
 	}
 
-	// Método também responsável por iniciar a partida de xadrez mas informando a
-	// posição de xadrez e não a posição da matriz como o método anterior
+	/* Método também responsável por iniciar a partida de xadrez mas informando a
+	 posição de xadrez e não a posição da matriz como o método anterior*/
 	private void iniciar_com_posicao_de_xadrez(char coluna, int linha, Peca_de_xadrez pecadexadrez) {
 
 		Posicao_de_xadrez x = new Posicao_de_xadrez(coluna, linha);
 		tabuleiro.colocarpeca(pecadexadrez, x.conversaodepecas());
+		
+		// Só que, sempre que uma peça for colocada no tabuleiro, precisamos adicioná-la à lista de peças no tabuleiro (Atributo dessa classe)
+		pecas_no_tabuleiro.add(pecadexadrez);
 	}
 	
 	//Método que pega a peça removida pelo método removepeca() da classe Tabuleiro e coloca na posição de destino
@@ -72,6 +98,7 @@ public class Partida_de_xadrez {
 		validarposicaodeorigem(x);
 		validarposicaodedestino(x,y);
 		Pecas capturedPiece = makeMove(x,y);
+		proximoTurno();
 		return (Peca_de_xadrez) capturedPiece;
 	}
 	
@@ -81,6 +108,11 @@ public class Partida_de_xadrez {
 		if(!tabuleiro.jatempeca(posicao))
 		{
 			throw new Chessexception("Não existe peça nessa posição");
+		}
+		
+		if(cor_da_vez != ((Peca_de_xadrez) tabuleiro.peca(posicao)).getCor())
+		{
+			throw new Chessexception("Voce nao pode mover esta peça !");
 		}
 		
 		if(!tabuleiro.peca(posicao).pelomenosuma())
@@ -98,11 +130,20 @@ public class Partida_de_xadrez {
 			throw new Chessexception("A peça não pode se mover para a posição de destino!");
 		}
 	}
+	
+	//Método que faz o deslocamento da peça
 	private static Pecas makeMove(Posicao posicaodapeca, Posicao posicao_da_peca_que_ocupa_o_destino)
 	{
 		Pecas peca_a_ser_movida= tabuleiro.removepeca(posicaodapeca);
 		Pecas peca_a_ser_retirada= tabuleiro.removepeca(posicao_da_peca_que_ocupa_o_destino);
 		tabuleiro.colocarpeca(peca_a_ser_movida, posicao_da_peca_que_ocupa_o_destino);
+		
+		//Caso haja peça adversária, ela deve ser retirada da lista pecas_no_tabuleiro e colocada na lista pecascapturadas
+		if(peca_a_ser_retirada != null)
+		{
+			pecas_no_tabuleiro.remove(peca_a_ser_retirada);
+			pecascapturadas.add(peca_a_ser_retirada);
+		}
 		
 		return peca_a_ser_retirada;
 	}
@@ -118,4 +159,16 @@ public class Partida_de_xadrez {
 			return tabuleiro.peca(posicao).matrizboolean();
 		}
 
+		// Método responsável por alterar o turno, isto é, passar a jogada ao adversário.
+		private static void proximoTurno()
+		{
+			turno++;
+			if(cor_da_vez == Cor.BRANCO)
+			{
+			cor_da_vez = Cor.PRETO;
+			}
+			else {
+				cor_da_vez = Cor.BRANCO;
+			}
+		}
 }
