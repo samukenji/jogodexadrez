@@ -17,7 +17,6 @@ public abstract class Peca_de_xadrez extends Pecas{
 	
 	
 	// Criando somente o getCor(), para utilizar o valor. A cor não pode ser alterada em nenhuma ocasião...
-	
 	public Cor getCor()
 	{
 		return cor;
@@ -30,6 +29,10 @@ public abstract class Peca_de_xadrez extends Pecas{
 		return x != null && x.getCor() != cor;
 	}
 	
-	
+	//Método auxiliar que será usado para implementar a lógica de xeque
+	public Posicao_de_xadrez getChessPosition()
+	{
+		return Posicao_de_xadrez.conversaoinversa(posicao);
+	}
 
 }

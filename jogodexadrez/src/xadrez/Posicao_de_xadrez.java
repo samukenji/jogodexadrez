@@ -49,7 +49,7 @@ public class Posicao_de_xadrez {
 	
 	protected static Posicao_de_xadrez conversaoinversa(Posicao posicao)
 	{
-		return new Posicao_de_xadrez((char)('a' - posicao.getColuna()), (8 - posicao.getLinha()));
+		return new Posicao_de_xadrez((char)('a' + posicao.getColuna()), (8 - posicao.getLinha()));
 	}
 
 	// toString() para mostrar a posição de xadrez da peça

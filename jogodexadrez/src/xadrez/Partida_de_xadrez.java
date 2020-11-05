@@ -3,7 +3,9 @@ package xadrez;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import excessoes.Boardexception;
 import excessoes.Chessexception;
 import pecas_oficiais.Rei;
 import pecas_oficiais.Torre;
@@ -17,6 +19,9 @@ public class Partida_de_xadrez {
 	private static Tabuleiro tabuleiro;
 	private static int turno;
 	private static Cor cor_da_vez;
+	
+	//Atributo que dá true ou false se o rei estiver em xeque
+	private static boolean xeque;
 	
 	// Para ajudar no controle do jogo, vamos criar também uma lista de peças que estão no tabuleiro e outra de peças que estão fora do tabuleiro.
 	private static List<Pecas> pecas_no_tabuleiro= new ArrayList<>();
@@ -43,6 +48,10 @@ public class Partida_de_xadrez {
 		return cor_da_vez;
 	}
 
+	public boolean getXeque()
+	{
+		return xeque;
+	}
 	// Método que retorna uma matriz de peças de xadrez para essa essa partida
 	public Peca_de_xadrez[][] getPieces() {
 		// Criando uma matriz com quantidade de linhas e colunas do tabuleiro.
@@ -98,8 +107,17 @@ public class Partida_de_xadrez {
 		validarposicaodeorigem(x);
 		validarposicaodedestino(x,y);
 		Pecas capturedPiece = makeMove(x,y);
-		proximoTurno();
+		//Testando se esse movimento está colocando o próprio rei em xeque, o que não é permitido!
+		if(testexeque(cor_da_vez))
+		{
+			desfazermovimento(x, y, capturedPiece);			
+			throw new Chessexception("Você não pode colocar o próprio rei em xeque!");
+		}
+		
+		xeque = (testexeque(oponente(cor_da_vez))) ? true : false;
+		proximoTurno();	
 		return (Peca_de_xadrez) capturedPiece;
+		
 	}
 	
 	//Método que verifica se existe peça em uma posição, para que ela seja movida
@@ -170,5 +188,64 @@ public class Partida_de_xadrez {
 			else {
 				cor_da_vez = Cor.BRANCO;
 			}
+		}
+		
+		// Método que refaz um movimento (faz voltar a posição inicial) quando este movimento coloca o rei em xeque (faz o oposto de makemove)
+		private static void desfazermovimento(Posicao posicaodeorigem, Posicao posicaodedestino, Pecas possivelpecacapturada)
+		{
+			Pecas p= tabuleiro.removepeca(posicaodedestino);
+			tabuleiro.colocarpeca(p, posicaodeorigem);
+			
+			if(possivelpecacapturada != null)
+			{
+				tabuleiro.colocarpeca(possivelpecacapturada, posicaodedestino);
+			}
+			
+			//Removendo a peça da lista de capturadas e repassando para a lista de tabuleiro
+			pecascapturadas.remove(possivelpecacapturada);
+			pecas_no_tabuleiro.add(possivelpecacapturada);
+		}
+		
+		private static Cor oponente(Cor cor)
+		{
+			return (cor == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+		}
+		
+		// Método que localiza o rei de uma cor para, com o próximo método, verificar se ele está em xeque ou não. Para tal, filtramos a lista
+		private static Peca_de_xadrez rei(Cor cor)
+		{
+			List<Pecas> lista= pecas_no_tabuleiro.stream().filter(x -> ((Peca_de_xadrez)x).getCor() == cor).collect(Collectors.toList());
+			for(Pecas p : lista)
+			{
+				if(p instanceof Rei)
+				{
+					return (Peca_de_xadrez)p;
+				}
+			}
+			
+			throw new IllegalStateException("Não existe Rei da cor " + cor + " no tabuleiro");
+		}
+		
+		//Método usado para verificar se o rei de uma cor está em xeque
+		private static boolean testexeque(Cor cor)
+		{
+			//Pegando a posição do Rei no formato de matriz
+			Posicao posicaodorei= rei(cor).getChessPosition().conversaodepecas();
+			
+			// criando uma lista que contém todas as peças adversárias
+			List<Pecas> pecasadversarias = pecas_no_tabuleiro.stream().filter(x -> ((Peca_de_xadrez)x).getCor() == oponente(cor)).collect(Collectors.toList());
+			
+			//Para cada uma dessas peças adversárias, precisamos testar se há algum movimento das minhas peças que levam até a posição do rei.
+			for(Pecas p : pecasadversarias)
+			{
+				boolean[][] mat = p.matrizboolean();
+				
+				if(mat[posicaodorei.getLinha()][posicaodorei.getColuna()])
+				{
+					return true;
+				}
+			}
+			
+			return false;
 		}
 }

@@ -112,6 +112,11 @@ public class UI {
 		imprimepecascapturadas(pecascapturadas);
 		System.out.println("Turno: " + partida.getTurno());
 		System.out.println("Esperando a jogada do: " + partida.getCor_da_vez());
+		
+		if(partida.getXeque() == true)
+		{
+			System.out.println("O rei está em xeque!");
+		}
 	}
 	
 	//Método que imprime na tela as peças capturadas durante o jogo. Para isso, precisamos criar antes uma lista dessas peças
